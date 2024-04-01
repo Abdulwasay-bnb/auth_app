@@ -12,7 +12,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import find_dotenv,load_dotenv
 
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+
+database_engine = os.getenv("database_engine")
+database_name = os.getenv("database_name")
+database_user = os.getenv("database_user")
+database_host = os.getenv("database_host")
+database_password = os.getenv("database_password")
+database_port = os.getenv("database_port")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,12 +89,12 @@ WSGI_APPLICATION = "auth_app.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test3',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',   # If your PostgreSQL server is running locally
-        'PORT': '5432',        # Default PostgreSQL port
+        'ENGINE': database_engine,
+        'NAME': database_name,
+        'USER': database_user,
+        'PASSWORD': database_password,
+        'HOST': database_host,   # If your PostgreSQL server is running locally
+        'PORT': database_port,        # Default PostgreSQL port
     }
 }
 

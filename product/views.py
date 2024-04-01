@@ -6,8 +6,14 @@ from django.contrib.auth.decorators import login_required
 from .models import Products, Comments
 from django.shortcuts import get_object_or_404
 from uuid import UUID
+import os
 from django.views.decorators.csrf import csrf_exempt
+from dotenv import find_dotenv,load_dotenv
 
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+
+product_list_path = os.getenv("product_list_path")
 # Create your views here.
 
 
@@ -44,7 +50,7 @@ import requests
 
 def product_list(request):
     # products= Products.objects.all()
-    response = requests.get('http://localhost:8000/api/')
+    response = requests.get(product_list_path)
     #convert reponse data into json
     products = response.json()
     print(products)
