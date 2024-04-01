@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wondering</title>
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: white;
+            font-family: 'Poppins';
+            background-size: cover;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About US</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  active" href="{% url 'services' %}">Our Services</a>
+                </li>
+                {% if user. is authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'logout' %}">Log out</a>
+                    </li>
+                   
+                    {% endif %}
+                    <li class="nav-item">
+                                <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
+                            </li>
+                        
+                
+    </ul>
+ </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<section class="py-5">
+    <div class="container">
+      <div class="row gx-5">
+        <aside class="col-lg-6">
+          <div class="border rounded-4 mb-3 d-flex justify-content-center">
+            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="{{product.image.url}}">
+              <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="{{product.image.url}}"/>
+            </a>
+          </div>
+          <div class="d-flex justify-content-center mb-3">
+            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{product.image.url}}" class="item-thumb">
+              <img width="60" height="60" class="rounded-2" src="{{product.image.url}}" />
+            </a>
+            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{product.image.url}}" class="item-thumb">
+              <img width="60" height="60" class="rounded-2" src="{{product.image.url}}" />
+            </a>
+            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{product.image.url}}" class="item-thumb">
+              <img width="60" height="60" class="rounded-2" src="{{product.image.url}}" />
+            </a>
+            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{product.image.url}}" class="item-thumb">
+              <img width="60" height="60" class="rounded-2" src="{{product.image.url}}" />
+            </a>
+            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{product.image.url}}" class="item-thumb">
+              <img width="60" height="60" class="rounded-2" src="{{product.image.url}}" />
+            </a>
+          </div>
+          <!-- thumbs-wrap.// -->
+          <!-- gallery-wrap .end// -->
+        </aside>
+        <main class="col-lg-6">
+          <div class="ps-lg-3">
+            <h4 class="title text-dark">
+              {{product.title}} <br />
+              {{product.provider.company}}
+            </h4>
+            <div class="d-flex flex-row my-3">
+              <div class="text-warning mb-1 me-2">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span class="ms-1">
+                  {{product.category}}
+                </span>
+              </div>
+              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
+              <span class="text-success ms-2">In stock</span>
+            </div>
+  
+            <div class="mb-3">
+              <span class="h5">{{product.price}}</span>
+              <span class="text-muted">/per box</span>
+            </div>
+  
+            <p>
+              {{product.description}}
+            </p>
+  
+            <div class="row">
+              <dt class="col-3">Type:</dt>
+              <dd class="col-9">{{product.category}}</dd>
+  
+              <dt class="col-3">Color</dt>
+              <dd class="col-9">Purple Black White Gold</dd>
+  
+              <dt class="col-3">Material</dt>
+              <dd class="col-9">Glass</dd>
+  
+              <dt class="col-3">Brand</dt>
+              <dd class="col-9">{{product.provider.company}}</dd>
+            </div>
+  
+            <hr />
+  
+            <div class="row mb-4">
+              <div class="col-md-4 col-6">
+                <label class="mb-2">Size</label>
+                <select class="form-select border border-secondary" style="height: 35px;">
+                  <option>128gb</option>
+                  <option>256gb</option>
+                  <option>512gb</option>
+                </select>
+              </div>
+              <!-- col.// -->
+              <div class="col-md-4 col-6 mb-3">
+                <label class="mb-2 d-block">Quantity</label>
+                <div class="input-group mb-3" style="width: 170px;">
+                  <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <input type="text" class="form-control text-center border border-secondary" placeholder="14" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                  <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <a href="#" class="btn btn-warning shadow-0"> Buy now </a>
+            <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+  {% for comment in comments %}
+  <section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                <div class="comment mt-4 text-justify float-left">
+                    <h4>{{comment.name}}</h4>
+                    <span>{{comment.created_at}}</span>
+                    <br>
+                    <p>{{comment.comment}}<p>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</section>
+{%endfor%}
+<div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+  <form id="algin-form" method ="POST">
+    {% csrf_token %}
+      <div class="form-group">
+          <h4>Leave a comment</h4>
+          <label for="message">Message</label>
+          <textarea name="comment" id=""msg cols="30" rows="5" class="form-control" style="background-color: white;"></textarea>
+      </div>
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" placeholder="Name", class="form-control">
+      </div>
+      <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" name="email" id="email" placeholder="Email" class="form-control">
+      </div>
+      <div class="form-group">
+          <p class="text-secondary">If you have a <a href="#" class="alert-link"> account</a> your address will be used to display your profile picture.</p>
+      </div>
+      <div class="form-inline">
+          <input type="checkbox" name="check" id="checkbx" class="mr-1">
+          <label for="subscribe">Subscribe me to the newlettter</label>
+      </div>
+      <div class="form-group">
+          <button type="submit" name='submit' id="post" class="btn btn-white border border-secondary px-3">Post Comment</button>
+      </div>
+  </form>
+</div>
+  <footer class="bg-dark text-white text-center p-3 mt-4">
+    <p>&copy; 2024 Your Website. All rights reserved.</p>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-eaQOWj+poYg30C76ePnljoqezxExYlqKnbq9/kWuoAAdwFtfjDH4jPDAiSIt8G8R"
+        crossorigin="anonymous"></script>
+</body>
+</html>

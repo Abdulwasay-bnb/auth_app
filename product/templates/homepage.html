@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wondering</title>
+	<link rel="icon" type="image/x-icon" href="img/logo.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .dark-mode body {
+            background-color: #333 !important;
+            color: #fff !important;
+        }
+	body {
+            background-color: white;
+            font-family: 'Poppins';
+            background-size: cover;
+        }
+        #alert{
+            position: fixed;
+            top: 40%;
+        }
+
+    </style>
+</head>
+<body>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" id= "alert" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+   {% endif %}
+
+   {% block content %}
+   {% endblock %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About US</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
+                    {% if user. is authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'logout' %}">Log out</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
+                                </li>
+                       
+                        {% endif %}
+                        <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'change_password' %}">Change Password</a>
+                                </li>
+                            
+                    
+
+            </ul>
+ </div>
+    </div>
+</nav>
+<br>
+<br>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-2">
+            <h4>Wondering</h4>
+            <ul class="list-group">
+                                <li class="list-group-item">Wondering</li>
+                                <li class="list-group-item">Why Wonder</li>
+                                <li class="list-group-item">Some Wonder i guess</li>
+                            </ul>
+        </div>
+        <div class="col-md-9">
+            <h1>Wondering</h1>
+            <p>characterized by or expressive of a desire to know something; curious.</p>
+            <p>characterized by or expressive of admiration and amazement.</p>
+	    <div class="embed-responsive embed-responsive-21by9">
+            {% for product in products %}
+            <section style="background-color: #eee;">
+                <div class="container py-5">
+                  <div class="row justify-content-center mb-3">
+                    <div class="col-md-12 col-xl-10">
+                      <div class="card shadow-0 border rounded-3">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                              <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                <a href = "/product/{{product.uid}}">
+                                <img src="{{product.image}}"
+                                  class="w-100" /></a>
+                                <a href="#!">
+                                  <div class="hover-overlay">
+                                    <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-6">
+                              <h5>{{product.title}}</h5>
+                              <div class="d-flex flex-row">
+                                <div class="text-danger mb-1 me-2">
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                </div>
+                                <span>{{product.provider.company}}</span>
+                              </div>
+                              <div class="mt-1 mb-0 text-muted small">
+                                <span>Category {{product.category}}</span>
+                                <span class="text-primary"> • </span>
+                              </div>
+                              <p class="text-truncate mb-4 mb-md-0">
+                                {{product.description}}
+                              </p>
+                            </div>
+                            <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                              <div class="d-flex flex-row align-items-center mb-1">
+                                <h4 class="mb-1 me-1">{{product.price}}</h4>
+                                <span class="text-danger"><s>10%</s></span>
+                              </div>
+                              <h6 class="text-success">Free shipping</h6>
+                              <div class="d-flex flex-column mt-4">
+                                <form method="POST">
+                                  <a href="/product/{{product.uid}}" class="btn btn-primary" role="button">Detail</a>
+                                <button class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                </form>
+                                  Add to wishlist
+                                </button>
+                              </div>
+                            </div>
+                            {{product.created_by}}
+                          </div>
+                        </div>
+                      </div>
+                      updated at {{product.updated_at}}
+                    </div>
+                  </div>
+                  {{product.created_at}}
+                  
+                </div>
+              </section>
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white text-center p-3 mt-4">
+    <p>&copy; 2024 Your Website. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
