@@ -58,13 +58,13 @@
                     <a class="nav-link" href="{% url 'services' %}">Our Services</a>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
-                    {% if user. is authenticated %}
+                    {% if user is authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link " href="{% url 'logout' %}">Log out</a>
+                            <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                                    <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
+                                    <a class="nav-link " href="{% url 'logout' %}">Log out</a>
                                 </li>
                        
                         {% endif %}
@@ -106,7 +106,7 @@
                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                               <div class="bg-image hover-zoom ripple rounded ripple-surface">
                                 <a href = "/product/{{product.uid}}">
-                                <img src="{{product.image.url}}"
+                                <img src="{{product.image}}"
                                   class="w-100" /></a>
                                 <a href="#!">
                                   <div class="hover-overlay">

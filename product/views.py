@@ -16,7 +16,7 @@ load_dotenv(dotenv_path)
 product_list_path = os.getenv("product_list_path")
 # Create your views here.
 
-
+@login_required
 def homepage(request):
     products= Products.objects.all()
     return render(request,"homepage.html", {"products": products})
@@ -44,6 +44,9 @@ def contact_us(request):
 
 def about(request):
     return render(request,"about.html")
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 
 import requests

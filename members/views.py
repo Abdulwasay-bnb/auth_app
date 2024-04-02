@@ -21,26 +21,28 @@ def login_user(request):
         password = request.POST.get('password')
 
         user = None
-        if phone_number:
-            req_user=CustomUser.objects.get(phone=phone_number)
-            print("hereeesAKZAZ,")
-            user = authenticate(request, email=req_user.email, password=password)
+        print("sahi")
+        req_user=CustomUser.objects.get(phone=phone_number)
+        print("hereeesAKZAZ,")
+        user = authenticate(request, email=req_user.phone, password=password)
+        print("ok")
         # elif username:
         #     user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
             messages.success(request,("Successfully logged in"))
+            print("done")
 
             return redirect('home')
         else:
             messages.error(request, "Error Logging in: Invalid username, phone number, or password")
-            return redirect('home')
+
     else:
         # Handle non-POST requests if needed
-        return HttpResponse("Method not allowed", status=405)
+        return HttpResponse("Method not allowed", status=404)
 
-    
+@login_required
 def logout_user(request):
     logout(request)
     messages.success(request,("Successfully logged out"))
@@ -79,7 +81,7 @@ def sign_up(request):
         form = RegisterUserForm()
     return render(request, "authenticate/signup.html", {'form': form})
 
-@login_required(login_url='/login_user/')
+@login_required
 def change_password(request):
     user = request.user
     superAdmin = False
