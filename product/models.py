@@ -47,5 +47,38 @@ class Collection(BaseModel):
     product = models.ForeignKey(Products,  on_delete=models.CASCADE)
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
 
+class Customer_Id(BaseModel):
+    email = models.EmailField(max_length=254)
+    password = models.TextField()
+    salt = models.CharField()
+    full_name = models.CharField(max_length=50)
+    phone_number = models.FloatField(max_length=10)
+    phone_code = models.CharField()
+    profile_pic = models.ImageField(upload_to ='uploads/', null =True , blank=True)
+
+class Cart(BaseModel):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    quantity  = models.IntegerField(default=0)
+    total_price = models.FloatField(default=0.0)
+
+    @property
+    def products_summary(self):
+        summary = {}
+        cart_products = CartProduct.objects.filter(carts=self)
+        
+        for cart_product in cart_products:
+            product = cart_product.product
+            if product.uid in summary:
+                summary[product.uid] += 1
+            else:
+                summary[product.uid] = 1
+        
+        print(summary)
+        return summary
 
 
+class CartProduct(BaseModel):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
+    carts = models.ForeignKey(Cart, on_delete=models.PROTECT, null=True, blank=True)
+    # quantity = models.IntegerField(default=0)
+    # quantity_wise_price = models.FloatField(default=0.0)

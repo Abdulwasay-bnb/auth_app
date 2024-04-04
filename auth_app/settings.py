@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import find_dotenv,load_dotenv
-from django.conf.urls import handler404
-
-handler404 = 'yourapp.views.custom_404'
 
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
@@ -37,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-_cfp8qycgw08^v3c5+bmxd3sc&avo!sw5a*r*0%lw!l_z04=4k"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
@@ -127,10 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    "static/",
-]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

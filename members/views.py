@@ -7,28 +7,23 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from members.models import CustomUser
+import bcrypt
 from .form import RegisterUserForm, SetPasswordForm
 from django import forms
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
+from api.custom_auth import custom_auth
 
 @csrf_exempt
 def login_user(request):
     if request.method == 'POST':
         print("HEREE")
         # username = request.POST.get('username')
-        phone_number = request.POST.get('username')
+        phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
-
         user = None
-        print("sahi")
         req_user=CustomUser.objects.get(phone=phone_number)
-        print("hereeesAKZAZ,")
-        user = authenticate(request, email=req_user.phone, password=password)
-        print("ok")
-        # elif username:
-        #     user = authenticate(request, username=username, password=password)
-
+        user = authenticate(request, email=req_user.email,password = password)
         if user is not None:
             login(request, user)
             messages.success(request,("Successfully logged in"))
@@ -36,8 +31,7 @@ def login_user(request):
 
             return redirect('home')
         else:
-            messages.error(request, "Error Logging in: Invalid username, phone number, or password")
-
+            messages.error(request, "Error Logging in: Invalid  phone number, or password")
     else:
         # Handle non-POST requests if needed
         return HttpResponse("Method not allowed", status=404)
@@ -57,14 +51,13 @@ def sign_up(request):
             email = form.cleaned_data['email']
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-
-
+            salt = bcrypt.gensalt()
             # Create the user object
             user = CustomUser.objects.create_user(email=email, password=password)
             user.phone = phone_number
             user.first_name = first_name
             user.last_name = last_name
-
+            user.salt = salt
             user.save()
 
             # Authenticate the user

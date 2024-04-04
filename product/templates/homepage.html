@@ -143,7 +143,7 @@
                               <div class="d-flex flex-column mt-4">
                                 <form method="POST">
                                   <a href="/product/{{product.uid}}" class="btn btn-primary" role="button">Detail</a>
-                                <button class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                  <a class="buy-now-button" href="{% url 'add_to_cart' product_uid=product.uid %}">Add to Cart</a>
                                 </form>
                                   Add to wishlist
                                 </button>
