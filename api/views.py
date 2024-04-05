@@ -22,7 +22,7 @@ def add_data(request):
         price=int(request.POST.get('price'))
         category=request.POST.get('category')
         email=request.POST.get('email')
-        user = CustomUser.objects.get(email=email)
+        user = request.user
         image = request.FILES.get('image')
         product = Products.objects.create(title=title, description=description, price=price, category=category, created_by=user, image=image)
         serializer = ProductSerializer(product)

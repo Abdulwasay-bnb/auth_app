@@ -25,11 +25,12 @@ def homepage(request):
     cart_product = CartProduct.objects.all()
     return render(request,"homepage.html", {"products": products, 'cart_product':cart_product})
 
-def product_detail(request, uid):
-    product = get_object_or_404(Products, uid=uid)
-    comments = Comments.objects.all().filter(product=product)
+def product_detail(request, product_uid):
+    product = get_object_or_404(Products, uid=product_uid)
+    comments = Comments.objects.filter(product=product)
     if request.method == 'POST':
         new_comment = Comments.objects.create(product=product, created_at=datetime.now())
+        
         new_comment.email = request.POST.get('email')
         new_comment.name = request.POST.get('name')
         new_comment.comment = request.POST.get('comment')
@@ -99,6 +100,7 @@ def customer_login_in(request):
                 # Log in the user
                 login(request, customer)
                 messages.success(request, "Successfully registered and logged in")
+                render(request, 'home')
                 return redirect('home')
             else:
                 # Authentication failed
@@ -130,3 +132,7 @@ def remove_from_cart(request, item_uid):
     cart_item = CartProduct.objects.get(uid=item_uid)
     cart_item.delete()
     return redirect('view_cart')
+
+
+data = '["person":{"name":"Wasay"}, "education":{"class":"10"}]'
+data = {'name':'Wasay'}

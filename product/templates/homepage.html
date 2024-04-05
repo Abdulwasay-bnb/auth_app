@@ -142,7 +142,7 @@
                               <h6 class="text-success">Free shipping</h6>
                               <div class="d-flex flex-column mt-4">
                                 <form method="POST">
-                                  <a href="/product/{{product.uid}}" class="btn btn-primary" role="button">Detail</a>
+                                  <a href="{% url 'product_detail' product_uid=product.uid %}" class="btn btn-primary" role="button">Detail</a>
                                   <a class="buy-now-button" href="{% url 'add_to_cart' product_uid=product.uid %}">Add to Cart</a>
                                 </form>
                                   Add to wishlist
