@@ -59,3 +59,4 @@ def editpost(request, uid):
         return JsonResponse({'message': 'Product updated successfully'})
     else:
         return JsonResponse({'error': 'Bad Request'}, status=400)
+    

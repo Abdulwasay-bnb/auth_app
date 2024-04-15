@@ -58,19 +58,21 @@
                     <a class="nav-link" href="{% url 'services' %}">Our Services</a>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
-                    {% if user is authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                                    <a class="nav-link " href="{% url 'logout' %}">Log out</a>
-                                </li>
-                       
-                        {% endif %}
-                        <li class="nav-item">
-                                    <a class="nav-link " href="{% url 'change_password' %}">Change Password</a>
-                                </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Login
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          {% if user is authenticated %}
+                          <li><a class="dropdown-item" href="{% url 'login_user' %}">Log in</a></li>
+                          {% else %}
+                          <li><a class="dropdown-item " href="{% url 'logout' %}">Log out</a></li>
+                          {% endif %}
+                          <li><a class="dropdown-item " href="{% url 'sign_up' %}">Sign Up</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-divider" href="{% url 'change_password' %}">Change Password</a></li>
+                        </ul>
+                      
                             
                     
 
@@ -80,20 +82,45 @@
 </nav>
 <br>
 <br>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-2">
-            <h4>Wondering</h4>
-            <ul class="list-group">
-                                <li class="list-group-item">Wondering</li>
-                                <li class="list-group-item">Why Wonder</li>
-                                <li class="list-group-item">Some Wonder i guess</li>
-                            </ul>
+<div class="container mt-5">
+        
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          </div>
+          {% load static %}
+          {% for product in products %}
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              
+              <a href="{% url 'product_detail' product_uid=product.uid %}"><img src="{{product.image.url}}" class="d-block w-100" alt="..."></a>
+            </div>
+          </div>
+          {% endfor %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-        <div class="col-md-9">
-            <h1>Wondering</h1>
-            <p>characterized by or expressive of a desire to know something; curious.</p>
-            <p>characterized by or expressive of admiration and amazement.</p>
+        <div>
+        <div class="container mt-4">
+          <div class="row">
+            <form method="POST">
+              {% csrf_token %}
+            <select class="form-select" name = 'sort_by' aria-label="Default select example">
+              <option selected>Latest</option>
+              <option value='price' >price</option>
+              <option value='category' >category</option>
+            </select>
+            <button class="btn btn-primary" role="button">sort_by</button>
+            <form>
 	    <div class="embed-responsive embed-responsive-21by9">
             {% for product in products %}
             <section style="background-color: #eee;">
@@ -105,9 +132,13 @@
                           <div class="row">
                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                               <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                <a href = "/product/{{product.uid}}">
-                                <img src="{{product.image}}"
-                                  class="w-100" /></a>
+                                <a href = "{% url 'product_detail' product_uid=product.uid %}">
+                                {%if product.image == None%}
+                                <img src="" class="w-100" alt="Image not found" /></a>
+                                {%else%}
+                                <img src="{{product.image.url}}" class="w-100" /></a>
+                                {%endif%}
+                                 
                                 <a href="#!">
                                   <div class="hover-overlay">
                                     <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>

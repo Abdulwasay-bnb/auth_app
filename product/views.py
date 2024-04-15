@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Products, Comments, Customer_Id, Cart, CartProduct
 from django.shortcuts import get_object_or_404
 from uuid import UUID
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import os
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import find_dotenv,load_dotenv
@@ -21,9 +25,22 @@ product_list_path = os.getenv("product_list_path")
 
 @login_required
 def homepage(request):
-    products= Products.objects.all()
+    products = Products.objects.all().order_by('provider')
+    if request.method == 'POST':
+        sort_by = request.POST.get('sort_by')
+        print(sort_by)
+        if sort_by == 'price':
+            products= Products.objects.all().order_by("price")
+            print(products)
+        if sort_by == 'category':
+            products= Products.objects.all().order_by("category")
+            print(list(products))
+        else:
+            products = Products.objects.all().order_by('created_at')
+    
     cart_product = CartProduct.objects.all()
     return render(request,"homepage.html", {"products": products, 'cart_product':cart_product})
+
 
 def product_detail(request, product_uid):
     product = get_object_or_404(Products, uid=product_uid)
@@ -113,9 +130,12 @@ def customer_login_in(request):
 def view_cart(request):
     user_cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = CartProduct.objects.filter(carts=user_cart).distinct('product')
-
-    # total_price = sum(item.product.price * item.quantity for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items,'user_cart':user_cart,'total_price': 500})
+    # df = pd.DataFrame(CartProduct.objects.values_list())
+    # fig, ax = plt.subplots(figsize=(10,6))
+    # sns.heatmap(df.corr(), center=0, cmap='BrBG', annot=True)
+    total_price = 0
+    total_price = sum(item.product.price  for item in cart_items)
+    return render(request, 'cart.html', {'cart_items': cart_items, 'user_cart':user_cart,'total_price': total_price})
  
 def add_to_cart(request, product_uid):
     product = get_object_or_404(Products, uid=product_uid)
@@ -134,5 +154,4 @@ def remove_from_cart(request, item_uid):
     return redirect('view_cart')
 
 
-data = '["person":{"name":"Wasay"}, "education":{"class":"10"}]'
-data = {'name':'Wasay'}
+
