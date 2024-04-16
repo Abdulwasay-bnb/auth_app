@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.conf import settings
-from product.views import homepage , services , contact_us , about, product_detail, product_list, customer_sign_up, customer_login_in, view_cart, add_to_cart, remove_from_cart
+from product.views import homepage , services , contact_us , about, product_detail, product_list, customer_sign_up, customer_login_in, view_cart, add_to_cart, remove_from_cart, comment_reply, checkout
 
 urlpatterns = [
     path('',homepage,name="home"),
@@ -14,4 +14,6 @@ urlpatterns = [
     path('cart/', view_cart, name='view_cart'),
     path('add/<uuid:product_uid>/', add_to_cart, name='add_to_cart'),
     path('remove/<uuid:item_uid>/', remove_from_cart, name='remove_from_cart'),
+    path('product_detail/<uuid:comment>/',comment_reply, name='comment_reply'),
+    path('checkout/',checkout,name='checkout'),
     ]

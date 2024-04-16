@@ -19,6 +19,10 @@ class Products(BaseModel):
     title = models.CharField(max_length = 200)
     description = models.TextField()
     image = models.ImageField(upload_to ='uploads/')
+    image2 = models.ImageField(upload_to ='uploads/',null = True)
+    image3 = models.ImageField(upload_to ='uploads/',null = True)
+    image4 = models.ImageField(upload_to ='uploads/',null = True)
+    image5 = models.ImageField(upload_to ='uploads/',null = True)
     category = models.CharField(choices=category_choices,default="Mobile")
     price = models.FloatField(default=0)
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE, null = True)
@@ -39,7 +43,7 @@ class Comments(BaseModel):
 
 
 class CommentReply(BaseModel):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     comment_p = models.ForeignKey(Comments, on_delete=models.CASCADE)
     reply = models.TextField()
 
@@ -82,3 +86,16 @@ class CartProduct(BaseModel):
     carts = models.ForeignKey(Cart, on_delete=models.PROTECT, null=True, blank=True)
     # quantity = models.IntegerField(default=0)
     # quantity_wise_price = models.FloatField(default=0.0)
+
+class Address(BaseModel):
+    country = models.CharField(null=True, blank=True)
+    city = models.CharField(null=True, blank=True)
+    postal_code = models.IntegerField(null=True, blank=True)
+    address_p = models.TextField(null=True, blank=True)
+
+class Checkout(BaseModel):
+    cart_p = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    address_p = models.ForeignKey(Address, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    phone = models.BigIntegerField(null=True, blank=True)
+

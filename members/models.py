@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class CustomUserManager(BaseUserManager):
 
     def _create_user(self, email, password=None, phone=None, **extra_fields):
@@ -34,6 +35,7 @@ class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     phone = models.CharField(null=True, blank=True,max_length=14)
+    address = models.ForeignKey('product.Address', blank=True, null=True, on_delete=models.CASCADE, related_name="user_address")
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['phone']
 

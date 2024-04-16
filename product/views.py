@@ -4,7 +4,7 @@ from django.http import HttpRequest,HttpResponse, HttpResponseNotFound, JsonResp
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Products, Comments, Customer_Id, Cart, CartProduct
+from .models import Products, Comments, Customer_Id, Cart, CartProduct, CommentReply,Checkout,Address
 from django.shortcuts import get_object_or_404
 from uuid import UUID
 import json
@@ -28,34 +28,42 @@ def homepage(request):
     products = Products.objects.all().order_by('provider')
     if request.method == 'POST':
         sort_by = request.POST.get('sort_by')
-        print(sort_by)
+      
         if sort_by == 'price':
             products= Products.objects.all().order_by("price")
-            print(products)
+        
         if sort_by == 'category':
             products= Products.objects.all().order_by("category")
-            print(list(products))
+         
         else:
             products = Products.objects.all().order_by('created_at')
     
     cart_product = CartProduct.objects.all()
     return render(request,"homepage.html", {"products": products, 'cart_product':cart_product})
 
-
 def product_detail(request, product_uid):
     product = get_object_or_404(Products, uid=product_uid)
     comments = Comments.objects.filter(product=product)
+    comment_ids = comments.values_list('uid', flat=True).distinct('comment_p')
+    comments_reply = CommentReply.objects.filter(comment_p__in=comments)
     if request.method == 'POST':
         new_comment = Comments.objects.create(product=product, created_at=datetime.now())
-        
         new_comment.email = request.POST.get('email')
         new_comment.name = request.POST.get('name')
         new_comment.comment = request.POST.get('comment')
         new_comment.product =  product
         new_comment.save()
-    return render(request, 'product_detail.html', {'product': product, 'comments':comments})
+    return render(request, 'product_detail.html', {'product': product, 'comments':comments,'comments_reply':comments_reply})
 
-  
+
+def comment_reply(request,comment):
+    if request.method == 'POST':
+        reply = request.POST.get('reply')
+        user = request.user
+        new_comment_reply = CommentReply.objects.create(comment_p = comment,reply=reply,user=user)
+        new_comment_reply.save()
+    
+
 def services(request):
     return render(request,"product.html")
 
@@ -130,11 +138,9 @@ def customer_login_in(request):
 def view_cart(request):
     user_cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = CartProduct.objects.filter(carts=user_cart).distinct('product')
-    # df = pd.DataFrame(CartProduct.objects.values_list())
-    # fig, ax = plt.subplots(figsize=(10,6))
-    # sns.heatmap(df.corr(), center=0, cmap='BrBG', annot=True)
+    cart_items_t = CartProduct.objects.filter(carts=user_cart)
     total_price = 0
-    total_price = sum(item.product.price  for item in cart_items)
+    total_price = sum(item.product.price  for item in cart_items_t)
     return render(request, 'cart.html', {'cart_items': cart_items, 'user_cart':user_cart,'total_price': total_price})
  
 def add_to_cart(request, product_uid):
@@ -154,4 +160,32 @@ def remove_from_cart(request, item_uid):
     return redirect('view_cart')
 
 
-
+@csrf_exempt
+def checkout(request):
+    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = CartProduct.objects.filter(carts=user_cart).distinct('product')
+    cart_items_t = CartProduct.objects.filter(carts=user_cart)
+    total_price = 0
+    total_price = sum(item.product.price  for item in cart_items_t)
+    address = request.user.address
+    if not address or address is None:
+        address = Address.objects.create()
+        request.user.address = address
+        request.user.save()
+    
+    if request.method == "POST":
+        save_address = request.POST.get('save_address')
+        phone = request.POST.get('phone')
+        checkout = Checkout.objects.get_or_create(user=request.user, address_p = address, cart_p = user_cart,phone = phone)
+        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHIIIIIIIIIIIIIIIIRRRRRRRRRREEEEEEEEEEEE", save_address)
+        if save_address == "save_address":
+            country = request.POST.get('country')
+            city = request.POST.get('city')
+            postal_code = request.POST.get('postal_code')
+            address_p = request.POST.get('address')
+            address.country=country
+            address.city = city
+            address.postal_code = postal_code
+            address.address_p = address_p
+            address.save()
+    return render(request, 'checkout.html', {'cart_items': cart_items, 'user_cart':user_cart,'total_price': total_price})

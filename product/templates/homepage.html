@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +28,7 @@
     </style>
 </head>
 <body>
+  <a href="#hello">Hello</a>
     {% if messages %}
     {% for message in messages %}
         <div class="alert alert-warning alert-dismissible fade show" id= "alert" role="alert">
@@ -91,7 +93,6 @@
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
           </div>
-          {% load static %}
           {% for product in products %}
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -196,7 +197,7 @@
         </div>
     </div>
 </div>
-
+<div id="hello"></div>
 <footer class="bg-dark text-white text-center p-3 mt-4">
     <p>&copy; 2024 Your Website. All rights reserved.</p>
 </footer>
