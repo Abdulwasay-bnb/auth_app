@@ -25,21 +25,33 @@ product_list_path = os.getenv("product_list_path")
 
 @login_required
 def homepage(request):
-    products = Products.objects.all().order_by('provider')
+    products = Products.objects.all()
     if request.method == 'POST':
         sort_by = request.POST.get('sort_by')
+        print("HEEEEEEEEEEE", sort_by)
       
         if sort_by == 'price':
-            products= Products.objects.all().order_by("price")
+            products= Products.objects.order_by("price")
         
-        if sort_by == 'category':
-            products= Products.objects.all().order_by("category")
-         
+        elif sort_by == 'price_desc':
+            products= Products.objects.order_by("price")[::-1]
+        
+        elif sort_by == 'category':
+            products= Products.objects.order_by("category")
+
+        elif sort_by == 'category_desc':
+            products= Products.objects.order_by("category")[::-1]
+        
+        elif sort_by == 'old':
+            products = Products.objects.order_by('created_at')[::-1]
+
         else:
             products = Products.objects.all().order_by('created_at')
     
     cart_product = CartProduct.objects.all()
-    return render(request,"homepage.html", {"products": products, 'cart_product':cart_product})
+    product_image = get_object_or_404(Products,uid="7628652e-2741-4a32-a1f3-4971e3abbfa0")
+    product_image_2 = get_object_or_404(Products,uid="1e7e53df-2d87-409c-bcc6-a941e5c86396")
+    return render(request,"homepage.html", {"products": products, 'cart_product':cart_product,'product_image':product_image,'product_image_2':product_image_2})
 
 def product_detail(request, product_uid):
     product = get_object_or_404(Products, uid=product_uid)
@@ -178,14 +190,16 @@ def checkout(request):
         phone = request.POST.get('phone')
         checkout = Checkout.objects.get_or_create(user=request.user, address_p = address, cart_p = user_cart,phone = phone)
         print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHIIIIIIIIIIIIIIIIRRRRRRRRRREEEEEEEEEEEE", save_address)
+        country = request.POST.get('country')
+        city = request.POST.get('city')
+        postal_code = request.POST.get('postal_code')
+        address_p = request.POST.get('address')
+        address.country=country
+        address.city = city
+        address.postal_code = postal_code
+        address.address_p = address_p
+        address.save()
         if save_address == "save_address":
-            country = request.POST.get('country')
-            city = request.POST.get('city')
-            postal_code = request.POST.get('postal_code')
-            address_p = request.POST.get('address')
-            address.country=country
-            address.city = city
-            address.postal_code = postal_code
-            address.address_p = address_p
-            address.save()
+            request.user.address = address
+            request.user.save()
     return render(request, 'checkout.html', {'cart_items': cart_items, 'user_cart':user_cart,'total_price': total_price})

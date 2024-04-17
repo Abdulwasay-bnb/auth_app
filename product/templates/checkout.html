@@ -50,7 +50,9 @@
 <br>
 <br>
 
- 
+<div class="card-header bg-transparent border-bottom py-3 px-4">
+  <h5 class="font-size-16 mb-0">Order Summary <span class="float-end">Order Number:  {{user_cart.uid}}</span></h5>
+</div>
       {% for item in cart_items %}
       <div class="col-xl-8">
         <div class="card border shadow-none">
@@ -211,7 +213,7 @@
               </div>
               <div class="mb-3"> 
                 <p class="dis fw-bold mb-2">Country</p> 
-                <input class="form-control" type="text" name="country" value="Pakistan"> 
+                <input class="form-control" type="text" name="country" value="{{user.address.country}}"> 
               </div> 
               <div class="mb-3"> 
                 <p class="dis fw-bold mb-2">Province</p> 
@@ -219,15 +221,15 @@
               </div> 
               <div class="mb-3"> 
                 <p class="dis fw-bold mb-2">City</p> 
-                <input class="form-control" type="text" name="city" value=""> 
+                <input class="form-control" type="text" name="city" value="{{user.address.city}}"> 
               </div> 
               <div class="mb-3"> 
                 <p class="dis fw-bold mb-2">Postal Code</p> 
-                <input class="form-control" type="number" name="postal_code" value=""> 
+                <input class="form-control" type="number" name="postal_code" value="{{user.address.postal_code}}"> 
               </div> 
               <div class="mb-3"> 
                 <p class="dis fw-bold mb-2">Address</p> 
-                <input class="form-control" type="text" name="address" value=""> 
+                <input class="form-control" type="text" name="address" value="{{user.address.address_p}}"> 
               </div> 
               <div> 
                 <p class="dis fw-bold mb-2">Card details</p> 
@@ -248,11 +250,11 @@
                   <div class="address"> 
                     <p class="dis fw-bold mb-3">Billing address</p> 
                     <select class="form-select" aria-label="Default select example"> 
-                      <option selected hidden>Pakistan</option> 
+                      <option selected hidden>{{user.address.country}}</option> 
                       <option value="1">India</option> 
-                      <option value="2">Australia</option> 
+                      <option value="2">Pakistan</option> 
                       <option value="3">Canada</option> </select> 
-                      <div class="d-flex"> <input class="form-control zip" type="text" placeholder="ZIP"> 
+                      <div class="d-flex"> <input class="form-control zip" type="text" placeholder="{{user.address.postal_code}}"> 
                         <input class="form-control state" type="text" placeholder="State"> 
                       
                       </div> 

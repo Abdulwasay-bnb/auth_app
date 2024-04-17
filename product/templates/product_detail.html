@@ -12,6 +12,10 @@
             font-family: 'Poppins';
             background-size: cover;
         }
+        .reply_user{
+            text-align: justify;
+            font-size: 15px;
+        }
 
     </style>
 </head>
@@ -161,6 +165,11 @@
       </div>
     </div>
   </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <h1>Comments</h1>
   {% for comment in comments %}
   <section>
     <div class="container">
@@ -179,11 +188,12 @@
                     <h5>{{comment.comment}}<h5>
                       <div>
                         
-                        <div class="">
+                        <div class="container mt-4">
                           
                           {% for reply in comments_reply %}                 
                           {% if reply.comment_p.uid == comment.uid %}
-                              <p>{{ reply.reply }}</p>
+                              <p class = "reply">Reply:  {{ reply.reply }}</p>
+                                <p class = "reply_user">By: {{reply.user.first_name}}</p>
                               {%endif%}
                           {% endfor %}
                       </div>

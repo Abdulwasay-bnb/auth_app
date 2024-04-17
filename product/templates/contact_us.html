@@ -6,57 +6,156 @@
     <title>Wondering</title>
 	<link rel="icon" type="image/x-icon" href="img/logo.jpg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Bootstrap Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
     <style>
         body {
-            transition: background-color 0.5s, color 0.5s;
-        }
-        .dark-mode body {
-            background-color: #333 !important;
-            color: #fff !important;
-        }
-	body {
-            background-color: white;
-            font-family: 'Poppins';
-            background-size: cover;
-        }
+            padding: 25px;
+            background-color: grey;
+            color: black;
+          }
+          
+          .dark-mode {
+            background-color: black;
+            color: white;
+          }
+          .DivSwitch{
+            position: absolute;
+            top:15px;
+            color:white;
+            right: 30px;
+            border: 3px 1px 4px;
+          }
+          
+            #alert{
+                position: fixed;
+                top: 40%;
+            }
+            .img1{
+              width: 2000px;
+              height: 700px;
+            }
+            .img2{
+              width: 2000px;
+              height: 700px;
+            }
+            .img3{
+              width: 2000px;
+              height: 700px;
+            }
+            .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: grey;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .slider {
+      background-color: black;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px white;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
 
     </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About US</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link  active" href="{% url 'contact_us' %}">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'services' %}">Our Services</a>
-                </li>
-                {% if user. is authenticated %}
+    <nav class="navbar navbar-expand-lg bg-secondary  border border-warning" >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'logout' %}">Log out</a>
+                        <a class="nav-link" href="{% url 'about' %}">About US</a>
                     </li>
-                    
-                    {% endif %}
                     <li class="nav-item">
-                                <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
-                            </li>
-                        
-                
-    </ul>
- </div>
-    </div>
-</nav>
+                        <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Login
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              {% if user is authenticated %}
+                              <li><a class="dropdown-item" href="{% url 'login_user' %}">Log in</a></li>
+                              {% else %}
+                              <li><a class="dropdown-item " href="{% url 'logout' %}">Log out</a></li>
+                              {% endif %}
+                              <li><a class="dropdown-item " href="{% url 'sign_up' %}">Sign Up</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-divider" href="{% url 'change_password' %}">Change Password</a></li>
+                            </ul>
+                           
+                            
+    
+                </ul>
+     </div>
+        </div>
+    </nav>
+    <div class="DivSwitch">
+        Dark Mode Swtich 
+        <label class="switch">
+          <input type="checkbox" onclick="myFunction()" checked>
+          <span class="slider round"></span>
+        </label></div>
 
     <section class="container my-5">
 	<br>
@@ -71,6 +170,10 @@
                     <li><strong>Email:</strong> email@email.com</li>
                     <li><strong>Phone:</strong> 92090078601</li>
                 </ul>
+                <div class="col-md-6">
+                <p class="border border-warning" id="CheckSentence"></p>
+                <p class="border border-warning" id="CheckSentenceIs"></p>
+                </div>
             </div>
             <div class="col-md-6">
                 <form>
@@ -84,9 +187,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Your Message</label>
-                        <textarea class="form-control" id="message" rows="4" placeholder="Write your message here"></textarea>
+                        <textarea class="form-control" spellcheck="true" id="myTextarea" rows="4" placeholder="Write your message here"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Sumbit</button>
+                    <button type="button" onclick="myFunction2()">Check Sentence</button>
+                    <button type="button" onclick="countWord()">Words Count</button>
+                    <button type="button" id="cCount" onclick="">Character Count</button>
+                    <button type="button" onclick="myFunction3()">All upper case</button>
                 </form>
             </div>
         </div>
@@ -97,6 +204,103 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-eaQOWj+poYg30C76ePnljoqezxExYlqKnbq9/kWuoAAdwFtfjDH4jPDAiSIt8G8R"
         crossorigin="anonymous"></script>
+        <script src="https://sapling.ai/static/js/sapling-sdk-v1.0.6.min.js"></script>
+        <script>
+            function myFunction() {
+              var element = document.body;
+              element.classList.toggle("dark-mode");
+            }
+            function locations(substring,string){
+                var a=[],i=-1;
+                while((i=string.indexOf(substring,i+1)) >= 0) a.push(i+1);
+                return a;
+              }
+            function is_correct_Sentence(input_str) {
+                var first_char = input_str[0]; // Get the first character of the string
+                var last_char = input_str[input_str.length - 1]; // Get the last character of the string
+                return /[A-Z]/.test(first_char) && last_char == "."; // Check if the first character is an uppercase letter and the last character is a period.
+            }
+
+            function firstLetterUpper(theString) {
+                var newString = theString.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g,function(c){return c.toUpperCase()});
+              return newString;
+            }
+            
+            function convertToSentenceCase() {
+              var theString = document.testForm.theString.value;
+              //alert(theString);
+              var newString = firstLetterUpper(theString);
+              //console.log("Converted: "+newString);
+              document.getElementById('theString').value = newString;
+            }
+            
+            function myFunction2(){
+                var x = document.getElementById("myTextarea").value;
+                var y = is_correct_Sentence(x)
+                console.log(locations(".",x));
+                if (y == false){
+                    var t = x[0].toUpperCase()+ x.substring(1);
+                    var array = locations(".",t);
+                    var newString = firstLetterUpper(x);
+                    document.getElementById("CheckSentence").innerHTML = x;
+                    document.getElementById("CheckSentenceIs").innerHTML = newString;
+                    document.getElementById("CheckSentence").style.backgroundColor = 'red';
+                    document.getElementById("CheckSentence").style.color = 'black';
+                    document.getElementById("CheckSentenceIs").style.backgroundColor = 'green';
+                    document.getElementById("CheckSentenceIs").style.color = 'white';
+                }
+                if (y == true){
+                    document.getElementById("CheckSentence").innerHTML = x;
+                    document.getElementById("CheckSentenceIs").innerHTML = y;
+                    document.getElementById("CheckSentence").style.backgroundColor = 'green';
+                    document.getElementById("CheckSentence").style.color = 'white';
+                    document.getElementById("CheckSentenceIs").style.backgroundColor = 'green';
+                    document.getElementById("CheckSentenceIs").style.color = 'white';
+                }
+
+            }
+            function myFunction3(){
+                var p = document.getElementById("myTextarea").value;
+                document.getElementById("CheckSentence").innerHTML = p;
+                p=p.toUpperCase()
+                document.getElementById("CheckSentenceIs").innerHTML = p;
+
+            }
+            function countWord() {
+ 
+                // Get the input text value
+                let words = document
+                    .getElementById("myTextarea").value;
+     
+                // Initialize the word counter
+                let count = 0;
+     
+                // Split the words on each
+                // space character 
+                let split = words.split(' ');
+     
+                // Loop through the words and 
+                // increase the counter when 
+                // each split word is not empty
+                for (let i = 0; i < split.length; i++) {
+                    if (split[i] != "") {
+                        count += 1;
+                    }
+                }
+                document.getElementById("CheckSentence")
+                .innerHTML = "Counted Words";
+                document.getElementById("CheckSentenceIs")
+                .innerHTML = count;
+            }
+            const counter_button = document.getElementById("cCount");
+            counter_button.addEventListener("click", function() {
+                let total_length = document.getElementById("myTextarea").value.length;
+                document.getElementById("CheckSentenceIs").innerText = total_length;
+                document.getElementById("CheckSentence").innerText = "Counted Characters";
+            });
+          </script>
+          
+          
 </body>
 
 </html>

@@ -6,63 +6,164 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
+            padding: 25px;
             background-color: white;
-            font-family: 'Poppins';
-            background-size: cover;
-        }
-
+            color: black;
+          }
+          
+          .dark-mode {
+            background-color: black;
+            color: white;
+            mix-blend-mode: luminosity;
+          }
+          .card-body{
+            color: white;
+          }
+            #alert{
+                position: fixed;
+                top: 40%;
+            }
+            .img1{
+              width: 2000px;
+              height: 700px;
+            }
+            .img2{
+              width: 2000px;
+              height: 700px;
+            }
+            .img3{
+              width: 2000px;
+              height: 700px;
+            }
+            .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: grey;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .slider {
+      background-color: black;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px white;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About US</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link  active" href="{% url 'services' %}">Our Services</a>
-                </li>
-                {% if user. is authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Wondering</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'logout' %}">Log out</a>
+                        <a class="nav-link" href="{% url 'about' %}">About US</a>
                     </li>
-                   
-                    {% endif %}
                     <li class="nav-item">
-                                <a class="nav-link " href="{% url 'login_user' %}">Log in</a>
-                            </li>
-                        
-                
-    </ul>
- </div>
-    </div>
-</nav>
+                        <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Login
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              {% if user is authenticated %}
+                              <li><a class="dropdown-item" href="{% url 'login_user' %}">Log in</a></li>
+                              {% else %}
+                              <li><a class="dropdown-item " href="{% url 'logout' %}">Log out</a></li>
+                              {% endif %}
+                              <li><a class="dropdown-item " href="{% url 'sign_up' %}">Sign Up</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-divider" href="{% url 'change_password' %}">Change Password</a></li>
+                            </ul>
+                            <li class="nav-item"> 
+                              <label class="switch">
+                                <input type="checkbox" onclick="myFunction()" checked>
+                                <span class="slider round"></span>
+                              </label><li>
+    
+                </ul>
+     </div>
+        </div>
+    </nav>
+    
     <div class="container-fluid">
                 <div class="container mt-4">
                     <div class="row">
                         <!-- Left Menu -->
-                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+                        <div class="col-sm-3">
+                            <br>
+                            <br>
+                            <br>
                             <h3>Wondering Wonder</h3>
                             <ul class="list-group">
-                                <li class="list-group-item">Wondering</li>
-                                <li class="list-group-item">Why Wonder</li>
-                                <li class="list-group-item">Some Wonder i guess</li>
+                                <li class="list-group-item bg-secondary text-white">Wondering</li>
+                                <li class="list-group-item bg-secondary text-white">Why Wonder</li>
+                                <li class="list-group-item bg-secondary text-white">Some Wonder i guess</li>
                             </ul>
                         </div>
             
                         <!-- Main Content -->
                         <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 				<br>
-				<br>        
+				<br>           
+                <br>
+                            <br>
+                            <br>
                             <h2>Wondering</h2>
                             {% load static %}
                             <img class="rounded-circle" src="{% static '1.jpg' %}" width="" height="256" alt="Wondering">
@@ -110,6 +211,12 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     </script>
+    <script>
+        function myFunction() {
+          var element = document.body;
+          element.classList.toggle("dark-mode");
+        }         
+      </script>
 </body>
 </html>
 
